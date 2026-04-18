@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Verification UI</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1c1c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container */
+.container {
+  width: 320px;
+}
+
+/* Card */
+.card {
+  background: #111;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Header */
+.header {
+  background: #25D366;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+/* Input */
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 10px;
+  background: #25D366;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #1ebe5d;
+}
+
+/* OTP Boxes */
+.otp-box {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.otp-box input {
+  width: 40px;
+  height: 45px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Hidden */
+.hidden {
+  display: none;
+}
+
+/* Back link */
+.back {
+  color: #25D366;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Phone Screen -->
+  <div id="phoneScreen" class="card">
+    <div class="header">
+      <h2>WhatsApp</h2>
+      <small>Use WhatsApp on your computer</small>
+    </div>
+
+    <h3>Enter your phone number</h3>
+    <input type="text" id="phone" placeholder="+92 Enter number">
+    <button onclick="sendCode()">NEXT →</button>
+  </div>
+
+  <!-- OTP Screen -->
+  <div id="otpScreen" class="card hidden">
+    <div class="header">
+      <h2>WhatsApp</h2>
+    </div>
+
+    <h3>Enter the 6-digit code</h3>
+
+    <div class="otp-box">
+      <input maxlength="1" oninput="moveNext(this,0)">
+      <input maxlength="1" oninput="moveNext(this,1)">
+      <input maxlength="1" oninput="moveNext(this,2)">
+      <input maxlength="1" oninput="moveNext(this,3)">
+      <input maxlength="1" oninput="moveNext(this,4)">
+      <input maxlength="1" oninput="moveNext(this,5)">
+    </div>
+
+    <button onclick="verifyCode()">VERIFY</button>
+    <span class="back" onclick="goBack()">← Back to phone number</span>
+  </div>
+
+</div>
+
+<script>
+function sendCode() {
+  let phone = document.getElementById("phone").value;
+
+  if (phone === "") {
+    alert("Enter phone number");
+    return;
+  }
+
+  document.getElementById("phoneScreen").classList.add("hidden");
+  document.getElementById("otpScreen").classList.remove("hidden");
+}
+
+/* Auto move OTP */
+function moveNext(input, index) {
+  let inputs = document.querySelectorAll(".otp-box input");
+
+  if (input.value.length === 1 && index < inputs.length - 1) {
+    inputs[index + 1].focus();
+  }
+}
+
+/* Verify */
+function verifyCode() {
+  let inputs = document.querySelectorAll(".otp-box input");
+  let code = "";
+
+  inputs.forEach(i => code += i.value);
+
+  if (code.length === 6) {
+    alert("Code Verified ✅");
+  } else {
+    alert("Enter complete 6-digit code");
+  }
+}
+
+/* Back */
+function goBack() {
+  document.getElementById("otpScreen").classList.add("hidden");
+  document.getElementById("phoneScreen").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
